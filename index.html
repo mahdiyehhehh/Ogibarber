@@ -2,125 +2,288 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Book · Ogi Barber</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ogi Barber · Brussels</title>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
         }
 
         body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background: #F0E4F5;
+            color: #1F1A1D;
+            line-height: 1.6;
+        }
+
+        /* Container */
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* ============================================
+                   SECTION 1: HERO
+                   ============================================ */
+        .hero {
             min-height: 100vh;
             display: flex;
-            justify-content: center;
             align-items: center;
-            padding: 16px;
-            background: linear-gradient(145deg, #1F1A1D 0%, #3D2B2F 45%, #1F1A1D 100%);
+            background: linear-gradient(135deg, #1F1A1D 0%, #3D2B2F 100%);
+            padding: 60px 0;
+            position: relative;
+            overflow: hidden;
         }
 
-        .booking-card {
-            max-width: 420px;
-            width: 100%;
-            background: rgba(240, 228, 245, 0.08);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border-radius: 40px;
-            padding: 32px 24px 28px;
-            border: 1px solid rgba(240, 228, 245, 0.08);
-            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5);
-        }
-
-        /* Header */
-        .header {
-            display: flex;
-            align-items: center;
-            gap: 14px;
-            margin-bottom: 24px;
-            padding-bottom: 16px;
-            border-bottom: 1px solid rgba(240, 228, 245, 0.06);
-        }
-
-        .avatar {
-            width: 56px;
-            height: 56px;
+        .hero::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(155, 160, 171, 0.06) 0%, transparent 70%);
             border-radius: 50%;
-            background: linear-gradient(135deg, #9BA0AB, #F0E4F5);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 26px;
-            flex-shrink: 0;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
         }
 
-        .header-text h2 {
-            font-size: 20px;
+        .hero-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-text h1 {
+            font-size: 64px;
             font-weight: 700;
             color: #F0E4F5;
-            letter-spacing: -0.3px;
+            line-height: 1.1;
+            letter-spacing: -2px;
+            margin-bottom: 16px;
         }
 
-        .header-text p {
-            font-size: 12px;
-            color: rgba(240, 228, 245, 0.4);
+        .hero-text h1 span {
+            color: #9BA0AB;
+        }
+
+        .hero-text p {
+            font-size: 18px;
+            color: rgba(240, 228, 245, 0.6);
+            margin-bottom: 32px;
+            max-width: 420px;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        .btn-primary {
+            background: #F0E4F5;
+            color: #1F1A1D;
+            padding: 16px 40px;
+            border: none;
+            border-radius: 60px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 32px rgba(240, 228, 245, 0.2);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: #F0E4F5;
+            padding: 16px 40px;
+            border: 1.5px solid rgba(240, 228, 245, 0.2);
+            border-radius: 60px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(240, 228, 245, 0.05);
+            border-color: rgba(240, 228, 245, 0.4);
+        }
+
+        .hero-image {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .hero-image .placeholder {
+            width: 100%;
+            max-width: 400px;
+            aspect-ratio: 1;
+            background: linear-gradient(135deg, #3D2B2F, #1F1A1D);
+            border-radius: 20px;
+            border: 1px solid rgba(240, 228, 245, 0.06);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 80px;
+            color: rgba(240, 228, 245, 0.05);
+            font-weight: 700;
+            letter-spacing: 4px;
+        }
+
+        /* ============================================
+                   SECTION 2: INFO (Hours + Location)
+                   ============================================ */
+        .info {
+            padding: 80px 0;
+            background: #F0E4F5;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+        }
+
+        .info-card {
+            background: #ffffff;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 4px 20px rgba(31, 26, 29, 0.04);
+            transition: all 0.3s ease;
+        }
+
+        .info-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 40px rgba(31, 26, 29, 0.08);
+        }
+
+        .info-card h3 {
+            font-size: 14px;
+            font-weight: 600;
+            color: #9BA0AB;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 16px;
+        }
+
+        .info-card h2 {
+            font-size: 24px;
+            font-weight: 700;
+            color: #1F1A1D;
+            margin-bottom: 12px;
+        }
+
+        .info-card p {
+            color: #3D2B2F;
+            opacity: 0.7;
+            font-size: 16px;
+        }
+
+        .hours-list {
+            list-style: none;
+            margin-top: 12px;
+        }
+
+        .hours-list li {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(155, 160, 171, 0.1);
+            color: #1F1A1D;
+            font-size: 15px;
+        }
+
+        .hours-list li:last-child {
+            border-bottom: none;
+        }
+
+        .hours-list .day {
             font-weight: 500;
         }
 
-        .badge {
-            background: rgba(155, 160, 171, 0.15);
-            color: #F0E4F5;
-            font-size: 10px;
+        .hours-list .time {
+            color: #3D2B2F;
+            opacity: 0.7;
+        }
+
+        .location-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 16px;
+            color: #1F1A1D;
+            font-weight: 600;
+            text-decoration: none;
+            border-bottom: 2px solid #9BA0AB;
+            padding-bottom: 4px;
+            transition: all 0.3s ease;
+        }
+
+        .location-link:hover {
+            border-bottom-color: #1F1A1D;
+        }
+
+        /* ============================================
+                   SECTION 3: BOOKING FORM
+                   ============================================ */
+        .booking {
+            padding: 80px 0;
+            background: #F0E4F5;
+        }
+
+        .booking-header {
+            text-align: center;
+            margin-bottom: 48px;
+        }
+
+        .booking-header h2 {
+            font-size: 40px;
             font-weight: 700;
-            padding: 4px 14px;
-            border-radius: 30px;
-            letter-spacing: 0.5px;
-            text-transform: uppercase;
-            border: 1px solid rgba(240, 228, 245, 0.06);
-            margin-left: auto;
+            color: #1F1A1D;
+            letter-spacing: -1px;
+            margin-bottom: 8px;
         }
 
-        /* Color Palette */
-        .palette-row {
-            display: flex;
-            gap: 10px;
-            justify-content: center;
-            margin-bottom: 28px;
-            padding: 8px 16px;
-            background: rgba(0, 0, 0, 0.15);
-            border-radius: 60px;
-            border: 1px solid rgba(240, 228, 245, 0.04);
+        .booking-header p {
+            color: #3D2B2F;
+            opacity: 0.6;
+            font-size: 18px;
         }
 
-        .color-dot {
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
-            border: 2px solid rgba(240, 228, 245, 0.08);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        .booking-form-wrapper {
+            max-width: 600px;
+            margin: 0 auto;
+            background: #ffffff;
+            padding: 48px;
+            border-radius: 24px;
+            box-shadow: 0 4px 20px rgba(31, 26, 29, 0.04);
         }
 
-        .color-dot:nth-child(1) { background: #1F1A1D; }
-        .color-dot:nth-child(2) { background: #3D2B2F; }
-        .color-dot:nth-child(3) { background: #F0E4F5; }
-        .color-dot:nth-child(4) { background: #9BA0AB; }
-        .color-dot:nth-child(5) { background: linear-gradient(135deg, #B2C2C4, #E4E8EB); }
-
-        /* Form */
         .form-group {
-            margin-bottom: 14px;
+            margin-bottom: 20px;
         }
 
         .form-group label {
             display: block;
-            font-size: 11px;
+            font-size: 13px;
             font-weight: 600;
-            color: rgba(240, 228, 245, 0.4);
-            margin-bottom: 4px;
-            letter-spacing: 0.5px;
-            text-transform: uppercase;
+            color: #1F1A1D;
+            margin-bottom: 6px;
+            letter-spacing: 0.3px;
         }
 
         .form-group input,
@@ -128,283 +291,302 @@
         .form-group textarea {
             width: 100%;
             padding: 14px 18px;
-            border: 1px solid rgba(240, 228, 245, 0.06);
-            border-radius: 24px;
-            font-size: 16px;
-            background: rgba(240, 228, 245, 0.04);
-            backdrop-filter: blur(10px);
-            color: #F0E4F5;
-            outline: none;
+            border: 1.5px solid rgba(155, 160, 171, 0.2);
+            border-radius: 12px;
+            font-size: 15px;
+            color: #1F1A1D;
+            background: #F0E4F5;
             transition: all 0.3s ease;
-        }
-
-        .form-group input::placeholder,
-        .form-group textarea::placeholder {
-            color: rgba(240, 228, 245, 0.2);
+            font-family: inherit;
         }
 
         .form-group input:focus,
         .form-group select:focus,
         .form-group textarea:focus {
-            border-color: rgba(240, 228, 245, 0.2);
-            background: rgba(240, 228, 245, 0.08);
-            box-shadow: 0 0 0 3px rgba(240, 228, 245, 0.03);
-        }
-
-        .form-group select {
-            appearance: none;
-            -webkit-appearance: none;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23F0E4F5' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
-            background-repeat: no-repeat;
-            background-position: right 18px center;
-            cursor: pointer;
-        }
-
-        .form-group select option {
-            background: #1F1A1D;
-            color: #F0E4F5;
+            outline: none;
+            border-color: #1F1A1D;
+            background: #ffffff;
+            box-shadow: 0 0 0 4px rgba(31, 26, 29, 0.04);
         }
 
         .form-group textarea {
-            min-height: 60px;
+            min-height: 80px;
             resize: vertical;
             font-family: inherit;
         }
 
         .form-row {
-            display: flex;
-            gap: 10px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
         }
 
-        .form-row .form-group {
-            flex: 1;
-        }
-
-        /* Submit Button */
-        .btn-submit {
+        .btn-book {
             width: 100%;
-            padding: 18px 24px;
+            padding: 18px;
+            background: #1F1A1D;
+            color: #F0E4F5;
             border: none;
             border-radius: 60px;
             font-size: 18px;
             font-weight: 700;
-            margin-top: 18px;
             cursor: pointer;
             transition: all 0.3s ease;
-            background: linear-gradient(135deg, #1F1A1D 0%, #3D2B2F 100%);
-            color: #F0E4F5;
-            border: 1px solid rgba(240, 228, 245, 0.08);
-            box-shadow: 0 8px 32px rgba(31, 26, 29, 0.4);
-            position: relative;
-            overflow: hidden;
+            margin-top: 8px;
         }
 
-        .btn-submit::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(105deg, transparent 40%, rgba(240, 228, 245, 0.05) 50%, transparent 60%);
-            transform: translateX(-100%);
-            transition: transform 0.6s ease;
+        .btn-book:hover {
+            background: #3D2B2F;
+            transform: translateY(-2px);
+            box-shadow: 0 12px 32px rgba(31, 26, 29, 0.15);
         }
 
-        .btn-submit:hover::before {
-            transform: translateX(100%);
+        .btn-book:active {
+            transform: translateY(0);
         }
 
-        .btn-submit:hover {
-            transform: scale(1.02);
-            box-shadow: 0 12px 48px rgba(31, 26, 29, 0.5);
-        }
-
-        .btn-submit:active {
-            transform: scale(0.96);
-        }
-
-        .btn-submit .icon {
-            display: inline-block;
-            margin-right: 10px;
-        }
-
-        /* DM Hint */
-        .dm-hint {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            margin-top: 14px;
-            padding: 8px 16px;
-            background: rgba(240, 228, 245, 0.02);
-            border-radius: 60px;
-            border: 1px solid rgba(240, 228, 245, 0.03);
-        }
-
-        .dm-hint span {
-            font-size: 11px;
-            color: rgba(240, 228, 245, 0.2);
-            font-weight: 500;
-        }
-
-        .dm-hint strong {
-            color: rgba(240, 228, 245, 0.35);
-        }
-
-        /* Footer */
+        /* ============================================
+                   FOOTER
+                   ============================================ */
         .footer {
-            text-align: center;
-            margin-top: 20px;
-            padding-top: 16px;
+            padding: 32px 0;
+            background: #1F1A1D;
             border-top: 1px solid rgba(240, 228, 245, 0.04);
-            font-size: 10px;
-            color: rgba(240, 228, 245, 0.12);
-            letter-spacing: 0.5px;
         }
 
-        .footer span {
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+
+        .footer p {
             color: rgba(240, 228, 245, 0.2);
+            font-size: 13px;
         }
 
-        /* Responsive */
-        @media (max-width: 480px) {
-            .booking-card {
-                padding: 24px 16px 20px;
-                border-radius: 32px;
+        .footer-links {
+            display: flex;
+            gap: 24px;
+        }
+
+        .footer-links a {
+            color: rgba(240, 228, 245, 0.2);
+            text-decoration: none;
+            font-size: 13px;
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: rgba(240, 228, 245, 0.5);
+        }
+
+        /* ============================================
+                   RESPONSIVE
+                   ============================================ */
+        @media (max-width: 768px) {
+            .hero-content {
+                grid-template-columns: 1fr;
+                gap: 40px;
+                text-align: center;
             }
+
+            .hero-text p {
+                margin-left: auto;
+                margin-right: auto;
+            }
+
+            .hero-buttons {
+                justify-content: center;
+            }
+
+            .hero-text h1 {
+                font-size: 40px;
+            }
+
+            .hero-image .placeholder {
+                max-width: 280px;
+                font-size: 40px;
+            }
+
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .booking-form-wrapper {
+                padding: 32px 24px;
+            }
+
             .form-row {
-                flex-direction: column;
+                grid-template-columns: 1fr;
                 gap: 0;
             }
-            .header-text h2 {
-                font-size: 18px;
+
+            .booking-header h2 {
+                font-size: 32px;
             }
-            .btn-submit {
-                font-size: 17px;
-                padding: 16px 20px;
-            }
-            .palette-row {
-                gap: 8px;
-                padding: 6px 12px;
-            }
-            .color-dot {
-                width: 24px;
-                height: 24px;
+
+            .footer-content {
+                flex-direction: column;
+                text-align: center;
             }
         }
 
-        @keyframes float {
-            0%,
-            100% {
-                transform: translateY(0px);
+        @media (max-width: 480px) {
+            .hero-text h1 {
+                font-size: 32px;
             }
-            50% {
-                transform: translateY(-4px);
+
+            .btn-primary,
+            .btn-secondary {
+                width: 100%;
+                text-align: center;
             }
-        }
 
-        .booking-card {
-            animation: float 6s ease-in-out infinite;
-        }
-
-        @media (prefers-reduced-motion: reduce) {
-            .booking-card {
-                animation: none;
+            .info-card {
+                padding: 28px 20px;
             }
         }
     </style>
 </head>
 <body>
 
-    <div class="booking-card">
-
-        <!-- Header -->
-        <div class="header">
-            <div class="avatar">✂️</div>
-            <div class="header-text">
-                <h2>ogi.barber</h2>
-                <p>Ognyan Tsochev · House Calls</p>
-            </div>
-            <span class="badge">DM</span>
-        </div>
-
-        <!-- Color Palette -->
-        <div class="palette-row">
-            <span class="color-dot"></span>
-            <span class="color-dot"></span>
-            <span class="color-dot"></span>
-            <span class="color-dot"></span>
-            <span class="color-dot"></span>
-        </div>
-
-        <!-- Booking Form -->
-        <form id="bookingForm">
-
-            <div class="form-group">
-                <label for="name">Your Name</label>
-                <input type="text" id="name" placeholder="e.g. Alex" required>
-            </div>
-
-            <div class="form-row">
-                <div class="form-group">
-                    <label for="service">Service</label>
-                    <select id="service" required>
-                        <option value="">Choose</option>
-                        <option value="Haircut & fade">✂️ Haircut & fade</option>
-                        <option value="Beard trim">🧔 Beard trim</option>
-                        <option value="Full grooming">✨ Full grooming</option>
-                        <option value="House call">🏠 House call</option>
-                    </select>
+    <!-- ==========================================
+    SECTION 1: HERO
+    ========================================== -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <div class="hero-text">
+                    <h1>Ogi <span>Barber</span></h1>
+                    <p>Premium haircuts and grooming services in Brussels. Book your chair or visit the shop.</p>
+                    <div class="hero-buttons">
+                        <a href="#booking" class="btn-primary">Book a chair</a>
+                        <a href="#location" class="btn-secondary">Visit us</a>
+                    </div>
                 </div>
-                <div class="form-group">
-                    <label for="date">Date & Time</label>
-                    <input type="text" id="date" placeholder="Fri 18 Apr, 2pm" required>
+                <div class="hero-image">
+                    <div class="placeholder">✂</div>
                 </div>
             </div>
-
-            <div class="form-group">
-                <label for="notes">Extra Info (optional)</label>
-                <input type="text" id="notes" placeholder="Address, style reference, anything...">
-            </div>
-
-            <button type="submit" class="btn-submit">
-                <span class="icon">📩</span> Book & DM Now
-            </button>
-
-            <div class="dm-hint">
-                <span>→ Opens Instagram with your pre-filled message ←</span>
-            </div>
-
-        </form>
-
-        <div class="footer">
-            <span>✂️</span> Five Barber · Brussels <span>✂️</span>
         </div>
+    </section>
 
-    </div>
+    <!-- ==========================================
+    SECTION 2: INFO (Hours + Location)
+    ========================================== -->
+    <section class="info" id="location">
+        <div class="container">
+            <div class="info-grid">
 
+                <!-- Opening Hours -->
+                <div class="info-card">
+                    <h3>Opening hours</h3>
+                    <h2>When to visit</h2>
+                    <ul class="hours-list">
+                        <li><span class="day">Monday</span><span class="time">Closed</span></li>
+                        <li><span class="day">Tuesday</span><span class="time">10:00 – 19:00</span></li>
+                        <li><span class="day">Wednesday</span><span class="time">10:00 – 19:00</span></li>
+                        <li><span class="day">Thursday</span><span class="time">10:00 – 19:00</span></li>
+                        <li><span class="day">Friday</span><span class="time">10:00 – 19:00</span></li>
+                        <li><span class="day">Saturday</span><span class="time">09:00 – 18:00</span></li>
+                        <li><span class="day">Sunday</span><span class="time">Closed</span></li>
+                    </ul>
+                </div>
+
+                <!-- Location -->
+                <div class="info-card">
+                    <h3>Location</h3>
+                    <h2>Find us</h2>
+                    <p>Brussels, Belgium</p>
+                    <a href="#" class="location-link">Get directions →</a>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- ==========================================
+    SECTION 3: BOOKING FORM
+    ========================================== -->
+    <section class="booking" id="booking">
+        <div class="container">
+            <div class="booking-header">
+                <h2>Book your chair</h2>
+                <p>Fill in the form and we'll confirm your appointment</p>
+            </div>
+
+            <div class="booking-form-wrapper">
+                <form id="bookingForm">
+
+                    <div class="form-group">
+                        <label for="name">Full name</label>
+                        <input type="text" id="name" placeholder="e.g. Alex Rivera" required>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="service">Service</label>
+                            <select id="service" required>
+                                <option value="">Select service</option>
+                                <option value="Haircut & fade">Haircut & fade</option>
+                                <option value="Beard trim">Beard trim</option>
+                                <option value="Full grooming">Full grooming</option>
+                                <option value="House call">House call</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="date">Preferred date & time</label>
+                            <input type="text" id="date" placeholder="e.g. Fri 18 Apr, 2pm" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="notes">Additional notes</label>
+                        <textarea id="notes" placeholder="Any special requests or details..."></textarea>
+                    </div>
+
+                    <button type="submit" class="btn-book">Book now</button>
+
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==========================================
+    FOOTER
+    ========================================== -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <p>© 2026 Ogi Barber · Brussels</p>
+                <div class="footer-links">
+                    <a href="#">Instagram</a>
+                    <a href="#">Five Barber</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ==========================================
+    SCRIPT
+    ========================================== -->
     <script>
-        // ============================================================
-        // CONFIGURATION
-        // ============================================================
-        const IG_USERNAME = "ogi.barber"; // The barber's Instagram handle
+        const IG_USERNAME = "ogi.barber";
 
-        // ============================================================
-        // FORM HANDLING
-        // ============================================================
         const form = document.getElementById('bookingForm');
 
         function openInstagramWithMessage(message) {
             const encoded = encodeURIComponent(message);
             const target = IG_USERNAME;
 
-            // Try Instagram app first (mobile)
             const appLink = 'instagram://direct/t/' + target + '?text=' + encoded;
-            // Web fallback (desktop or if app not installed)
             const webLink = 'https://www.instagram.com/direct/t/' + target + '/?text=' + encoded;
 
-            // Open app link
             window.open(appLink, '_blank');
 
-            // Open web link as fallback after a short delay
             setTimeout(function() {
                 window.open(webLink, '_blank');
             }, 300);
@@ -413,40 +595,33 @@
         form.addEventListener('submit', function(e) {
             e.preventDefault();
 
-            // Get form values
             const name = document.getElementById('name').value.trim();
             const service = document.getElementById('service').value;
             const date = document.getElementById('date').value.trim();
             const notes = document.getElementById('notes').value.trim();
 
-            // Validate required fields
             if (!name || !service || !date) {
-                alert('Please fill in your name, service, and date.');
+                alert('Please fill in your name, service, and preferred date.');
                 return;
             }
 
-            // Build clean DM message
-            let message = '✂️ Booking request for @' + IG_USERNAME + '\n\n';
-            message = message + 'Name: ' + name + '\n';
-            message = message + 'Service: ' + service + '\n';
-            message = message + 'Date: ' + date + '\n';
+            let message = 'Booking request for @' + IG_USERNAME + '\n\n';
+            message += 'Name: ' + name + '\n';
+            message += 'Service: ' + service + '\n';
+            message += 'Date: ' + date + '\n';
             if (notes) {
-                message = message + 'Notes: ' + notes + '\n';
+                message += 'Notes: ' + notes + '\n';
             }
-            message = message + '\n— sent via booking form';
+            message += '\n— sent via booking form';
 
-            // Open Instagram with pre-filled message
             openInstagramWithMessage(message);
         });
 
-        // Clear error state on focus
         document.querySelectorAll('input, select, textarea').forEach(function(el) {
             el.addEventListener('focus', function() {
                 this.style.borderColor = '';
             });
         });
-
-        console.log('✅ Booking form ready for @' + IG_USERNAME);
     </script>
 
 </body>
