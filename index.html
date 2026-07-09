@@ -319,7 +319,6 @@
             gap: 16px;
         }
 
-        /* Button group */
         .button-group {
             display: flex;
             gap: 12px;
@@ -376,7 +375,6 @@
             transform: none !important;
         }
 
-        /* Status message */
         .status-message {
             text-align: center;
             padding: 14px;
@@ -607,13 +605,11 @@
                         <textarea id="notes" placeholder="Any special requests or details..."></textarea>
                     </div>
 
-                    <!-- TWO-STEP BUTTONS -->
                     <div class="button-group">
-                        <button type="button" id="copyBtn" class="btn btn-copy">📋 Copy booking info</button>
-                        <button type="button" id="sendBtn" class="btn btn-send" disabled>📩 Send to Ogi Barber</button>
+                        <button type="button" id="copyBtn" class="btn btn-copy">Copy booking</button>
+                        <button type="button" id="sendBtn" class="btn btn-send" disabled>Send request</button>
                     </div>
 
-                    <!-- Status message -->
                     <div id="statusMessage" class="status-message"></div>
                 </form>
             </div>
@@ -651,7 +647,7 @@
         let isCopied = false;
 
         // ============================================================
-        // BUILD MESSAGE FROM FORM
+        // BUILD MESSAGE
         // ============================================================
         function buildMessage() {
             const name = document.getElementById('name').value.trim();
@@ -663,26 +659,25 @@
                 return null;
             }
 
-            let message = '✂️ Booking request for @' + IG_USERNAME + '\n\n';
+            let message = 'Booking request for @' + IG_USERNAME + '\n\n';
             message += 'Name: ' + name + '\n';
             message += 'Service: ' + service + '\n';
             message += 'Date: ' + date + '\n';
             if (notes) {
                 message += 'Notes: ' + notes + '\n';
             }
-            message += '\n— sent via booking form';
+            message += '\n— via booking form';
 
             return message;
         }
 
         // ============================================================
-        // COPY FUNCTION
+        // COPY TO CLIPBOARD
         // ============================================================
         function copyToClipboard(text) {
             if (navigator.clipboard && navigator.clipboard.writeText) {
                 return navigator.clipboard.writeText(text);
             } else {
-                // Fallback
                 return new Promise(function(resolve, reject) {
                     const textarea = document.createElement('textarea');
                     textarea.value = text;
@@ -702,7 +697,7 @@
         }
 
         // ============================================================
-        // SHOW STATUS MESSAGE
+        // SHOW STATUS
         // ============================================================
         function showStatus(message, type) {
             statusMsg.textContent = message;
@@ -714,13 +709,13 @@
         }
 
         // ============================================================
-        // COPY BUTTON - Step 1
+        // COPY BUTTON
         // ============================================================
         copyBtn.addEventListener('click', function() {
             const message = buildMessage();
 
             if (!message) {
-                showStatus('Please fill in your name, service, and preferred date.', 'info');
+                showStatus('Please fill in all required fields.', 'info');
                 setTimeout(hideStatus, 3000);
                 return;
             }
@@ -730,37 +725,33 @@
             copyToClipboard(message)
                 .then(function() {
                     isCopied = true;
-                    copyBtn.textContent = '✅ Copied!';
+                    copyBtn.textContent = '✅ Copied';
                     copyBtn.classList.add('copied');
                     sendBtn.disabled = false;
-                    showStatus('Booking info copied! Now click "Send to Ogi Barber" to open their Instagram.', 'success');
+                    showStatus('Booking details copied. Ready to send.', 'success');
                 })
                 .catch(function() {
-                    showStatus('Failed to copy. Please try again.', 'info');
+                    showStatus('Copy failed. Please try again.', 'info');
                     setTimeout(hideStatus, 3000);
                 });
         });
 
         // ============================================================
-        // SEND BUTTON - Step 2: Open Instagram Profile
+        // SEND BUTTON
         // ============================================================
         sendBtn.addEventListener('click', function() {
             if (!isCopied) {
-                showStatus('Please copy your booking info first.', 'info');
+                showStatus('Copy your booking details first.', 'info');
                 setTimeout(hideStatus, 3000);
                 return;
             }
 
-            // Show confirmation before opening
-            showStatus('Opening Instagram... Just paste (Ctrl+V / Cmd+V) and send your booking info!', 'success');
-
-            // Open Instagram profile
+            showStatus('Opening Instagram — paste and send your booking.', 'success');
             window.open(IG_PROFILE_URL, '_blank');
 
-            // Reset after a moment
             setTimeout(function() {
                 isCopied = false;
-                copyBtn.textContent = '📋 Copy booking info';
+                copyBtn.textContent = 'Copy booking';
                 copyBtn.classList.remove('copied');
                 sendBtn.disabled = true;
                 hideStatus();
@@ -768,11 +759,10 @@
         });
 
         // ============================================================
-        // VALIDATE FORM ON INPUT - Enable/disable copy button
+        // FORM VALIDATION
         // ============================================================
         form.querySelectorAll('input, select, textarea').forEach(function(el) {
             el.addEventListener('input', function() {
-                // If form is filled, enable copy button
                 const name = document.getElementById('name').value.trim();
                 const service = document.getElementById('service').value;
                 const date = document.getElementById('date').value.trim();
@@ -783,10 +773,9 @@
                     copyBtn.style.opacity = '0.5';
                 }
 
-                // Reset copy state if form changes
                 if (isCopied) {
                     isCopied = false;
-                    copyBtn.textContent = '📋 Copy booking info';
+                    copyBtn.textContent = 'Copy booking';
                     copyBtn.classList.remove('copied');
                     sendBtn.disabled = true;
                     hideStatus();
@@ -794,24 +783,7 @@
             });
         });
 
-        // ============================================================
-        // ENTER KEY - Submit on Enter
-        // ============================================================
-        form.addEventListener('keydown', function(e) {
-            if (e.key === 'Enter' && e.target.tagName !== 'TEXTAREA') {
-                e.preventDefault();
-                if (isCopied) {
-                    sendBtn.click();
-                } else {
-                    copyBtn.click();
-                }
-            }
-        });
-
-        console.log('✅ Booking form ready for @' + IG_USERNAME);
-        console.log('📋 Step 1: Fill form → Click "Copy booking info"');
-        console.log('📩 Step 2: Click "Send to Ogi Barber" → Opens Instagram');
-        console.log('💡 Just paste (Ctrl+V) the message and send!');
+        console.log('✅ Booking form ready');
     </script>
 
 </body>
