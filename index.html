@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Book · Ogi Barber</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 16px;
+            background: linear-gradient(145deg, #1F1A1D 0%, #3D2B2F 45%, #1F1A1D 100%);
+        }
+
+        .booking-card {
+            max-width: 420px;
+            width: 100%;
+            background: rgba(240, 228, 245, 0.08);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: 40px;
+            padding: 32px 24px 28px;
+            border: 1px solid rgba(240, 228, 245, 0.08);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5);
+        }
+
+        /* Header */
+        .header {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin-bottom: 24px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid rgba(240, 228, 245, 0.06);
+        }
+
+        .avatar {
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #9BA0AB, #F0E4F5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 26px;
+            flex-shrink: 0;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .header-text h2 {
+            font-size: 20px;
+            font-weight: 700;
+            color: #F0E4F5;
+            letter-spacing: -0.3px;
+        }
+
+        .header-text p {
+            font-size: 12px;
+            color: rgba(240, 228, 245, 0.4);
+            font-weight: 500;
+        }
+
+        .badge {
+            background: rgba(155, 160, 171, 0.15);
+            color: #F0E4F5;
+            font-size: 10px;
+            font-weight: 700;
+            padding: 4px 14px;
+            border-radius: 30px;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            border: 1px solid rgba(240, 228, 245, 0.06);
+            margin-left: auto;
+        }
+
+        /* Color Palette */
+        .palette-row {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-bottom: 28px;
+            padding: 8px 16px;
+            background: rgba(0, 0, 0, 0.15);
+            border-radius: 60px;
+            border: 1px solid rgba(240, 228, 245, 0.04);
+        }
+
+        .color-dot {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            border: 2px solid rgba(240, 228, 245, 0.08);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .color-dot:nth-child(1) { background: #1F1A1D; }
+        .color-dot:nth-child(2) { background: #3D2B2F; }
+        .color-dot:nth-child(3) { background: #F0E4F5; }
+        .color-dot:nth-child(4) { background: #9BA0AB; }
+        .color-dot:nth-child(5) { background: linear-gradient(135deg, #B2C2C4, #E4E8EB); }
+
+        /* Form */
+        .form-group {
+            margin-bottom: 14px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 11px;
+            font-weight: 600;
+            color: rgba(240, 228, 245, 0.4);
+            margin-bottom: 4px;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 14px 18px;
+            border: 1px solid rgba(240, 228, 245, 0.06);
+            border-radius: 24px;
+            font-size: 16px;
+            background: rgba(240, 228, 245, 0.04);
+            backdrop-filter: blur(10px);
+            color: #F0E4F5;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input::placeholder,
+        .form-group textarea::placeholder {
+            color: rgba(240, 228, 245, 0.2);
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            border-color: rgba(240, 228, 245, 0.2);
+            background: rgba(240, 228, 245, 0.08);
+            box-shadow: 0 0 0 3px rgba(240, 228, 245, 0.03);
+        }
+
+        .form-group select {
+            appearance: none;
+            -webkit-appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23F0E4F5' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 18px center;
+            cursor: pointer;
+        }
+
+        .form-group select option {
+            background: #1F1A1D;
+            color: #F0E4F5;
+        }
+
+        .form-group textarea {
+            min-height: 60px;
+            resize: vertical;
+            font-family: inherit;
+        }
+
+        .form-row {
+            display: flex;
+            gap: 10px;
+        }
+
+        .form-row .form-group {
+            flex: 1;
+        }
+
+        /* Submit Button */
+        .btn-submit {
+            width: 100%;
+            padding: 18px 24px;
+            border: none;
+            border-radius: 60px;
+            font-size: 18px;
+            font-weight: 700;
+            margin-top: 18px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: linear-gradient(135deg, #1F1A1D 0%, #3D2B2F 100%);
+            color: #F0E4F5;
+            border: 1px solid rgba(240, 228, 245, 0.08);
+            box-shadow: 0 8px 32px rgba(31, 26, 29, 0.4);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-submit::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(105deg, transparent 40%, rgba(240, 228, 245, 0.05) 50%, transparent 60%);
+            transform: translateX(-100%);
+            transition: transform 0.6s ease;
+        }
+
+        .btn-submit:hover::before {
+            transform: translateX(100%);
+        }
+
+        .btn-submit:hover {
+            transform: scale(1.02);
+            box-shadow: 0 12px 48px rgba(31, 26, 29, 0.5);
+        }
+
+        .btn-submit:active {
+            transform: scale(0.96);
+        }
+
+        .btn-submit .icon {
+            display: inline-block;
+            margin-right: 10px;
+        }
+
+        /* DM Hint */
+        .dm-hint {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 14px;
+            padding: 8px 16px;
+            background: rgba(240, 228, 245, 0.02);
+            border-radius: 60px;
+            border: 1px solid rgba(240, 228, 245, 0.03);
+        }
+
+        .dm-hint span {
+            font-size: 11px;
+            color: rgba(240, 228, 245, 0.2);
+            font-weight: 500;
+        }
+
+        .dm-hint strong {
+            color: rgba(240, 228, 245, 0.35);
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            margin-top: 20px;
+            padding-top: 16px;
+            border-top: 1px solid rgba(240, 228, 245, 0.04);
+            font-size: 10px;
+            color: rgba(240, 228, 245, 0.12);
+            letter-spacing: 0.5px;
+        }
+
+        .footer span {
+            color: rgba(240, 228, 245, 0.2);
+        }
+
+        /* Responsive */
+        @media (max-width: 480px) {
+            .booking-card {
+                padding: 24px 16px 20px;
+                border-radius: 32px;
+            }
+            .form-row {
+                flex-direction: column;
+                gap: 0;
+            }
+            .header-text h2 {
+                font-size: 18px;
+            }
+            .btn-submit {
+                font-size: 17px;
+                padding: 16px 20px;
+            }
+            .palette-row {
+                gap: 8px;
+                padding: 6px 12px;
+            }
+            .color-dot {
+                width: 24px;
+                height: 24px;
+            }
+        }
+
+        @keyframes float {
+            0%,
+            100% {
+                transform: translateY(0px);
+            }
+            50% {
+                transform: translateY(-4px);
+            }
+        }
+
+        .booking-card {
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .booking-card {
+                animation: none;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="booking-card">
+
+        <!-- Header -->
+        <div class="header">
+            <div class="avatar">✂️</div>
+            <div class="header-text">
+                <h2>ogi.barber</h2>
+                <p>Ognyan Tsochev · House Calls</p>
+            </div>
+            <span class="badge">DM</span>
+        </div>
+
+        <!-- Color Palette -->
+        <div class="palette-row">
+            <span class="color-dot"></span>
+            <span class="color-dot"></span>
+            <span class="color-dot"></span>
+            <span class="color-dot"></span>
+            <span class="color-dot"></span>
+        </div>
+
+        <!-- Booking Form -->
+        <form id="bookingForm">
+
+            <div class="form-group">
+                <label for="name">Your Name</label>
+                <input type="text" id="name" placeholder="e.g. Alex" required>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="service">Service</label>
+                    <select id="service" required>
+                        <option value="">Choose</option>
+                        <option value="Haircut & fade">✂️ Haircut & fade</option>
+                        <option value="Beard trim">🧔 Beard trim</option>
+                        <option value="Full grooming">✨ Full grooming</option>
+                        <option value="House call">🏠 House call</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="date">Date & Time</label>
+                    <input type="text" id="date" placeholder="Fri 18 Apr, 2pm" required>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="notes">Extra Info (optional)</label>
+                <input type="text" id="notes" placeholder="Address, style reference, anything...">
+            </div>
+
+            <button type="submit" class="btn-submit">
+                <span class="icon">📩</span> Book & DM Now
+            </button>
+
+            <div class="dm-hint">
+                <span>→ Opens Instagram with your pre-filled message ←</span>
+            </div>
+
+        </form>
+
+        <div class="footer">
+            <span>✂️</span> Five Barber · Brussels <span>✂️</span>
+        </div>
+
+    </div>
+
+    <script>
+        // ============================================================
+        // CONFIGURATION
+        // ============================================================
+        const IG_USERNAME = "ogi.barber"; // The barber's Instagram handle
+
+        // ============================================================
+        // FORM HANDLING
+        // ============================================================
+        const form = document.getElementById('bookingForm');
+
+        function openInstagramWithMessage(message) {
+            const encoded = encodeURIComponent(message);
+            const target = IG_USERNAME;
+
+            // Try Instagram app first (mobile)
+            const appLink = 'instagram://direct/t/' + target + '?text=' + encoded;
+            // Web fallback (desktop or if app not installed)
+            const webLink = 'https://www.instagram.com/direct/t/' + target + '/?text=' + encoded;
+
+            // Open app link
+            window.open(appLink, '_blank');
+
+            // Open web link as fallback after a short delay
+            setTimeout(function() {
+                window.open(webLink, '_blank');
+            }, 300);
+        }
+
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            // Get form values
+            const name = document.getElementById('name').value.trim();
+            const service = document.getElementById('service').value;
+            const date = document.getElementById('date').value.trim();
+            const notes = document.getElementById('notes').value.trim();
+
+            // Validate required fields
+            if (!name || !service || !date) {
+                alert('Please fill in your name, service, and date.');
+                return;
+            }
+
+            // Build clean DM message
+            let message = '✂️ Booking request for @' + IG_USERNAME + '\n\n';
+            message = message + 'Name: ' + name + '\n';
+            message = message + 'Service: ' + service + '\n';
+            message = message + 'Date: ' + date + '\n';
+            if (notes) {
+                message = message + 'Notes: ' + notes + '\n';
+            }
+            message = message + '\n— sent via booking form';
+
+            // Open Instagram with pre-filled message
+            openInstagramWithMessage(message);
+        });
+
+        // Clear error state on focus
+        document.querySelectorAll('input, select, textarea').forEach(function(el) {
+            el.addEventListener('focus', function() {
+                this.style.borderColor = '';
+            });
+        });
+
+        console.log('✅ Booking form ready for @' + IG_USERNAME);
+    </script>
+
+</body>
+</html>
