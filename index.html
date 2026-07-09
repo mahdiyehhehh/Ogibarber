@@ -319,28 +319,87 @@
             gap: 16px;
         }
 
-        .btn-book {
-            width: 100%;
-            padding: 18px;
-            background: #1F1A1D;
-            color: #F0E4F5;
+        /* Button group */
+        .button-group {
+            display: flex;
+            gap: 12px;
+            margin-top: 8px;
+            flex-wrap: wrap;
+        }
+
+        .button-group .btn {
+            flex: 1;
+            min-width: 140px;
+            padding: 16px 20px;
             border: none;
             border-radius: 60px;
-            font-size: 18px;
+            font-size: 16px;
             font-weight: 700;
             cursor: pointer;
             transition: all 0.3s ease;
-            margin-top: 8px;
+            text-align: center;
         }
 
-        .btn-book:hover {
+        .btn-copy {
+            background: #9BA0AB;
+            color: #1F1A1D;
+        }
+
+        .btn-copy:hover {
+            background: #8a9099;
+            transform: translateY(-2px);
+        }
+
+        .btn-copy.copied {
+            background: #3D2B2F;
+            color: #F0E4F5;
+        }
+
+        .btn-copy.copied:hover {
+            background: #2d1f22;
+        }
+
+        .btn-send {
+            background: #1F1A1D;
+            color: #F0E4F5;
+        }
+
+        .btn-send:hover {
             background: #3D2B2F;
             transform: translateY(-2px);
             box-shadow: 0 12px 32px rgba(31, 26, 29, 0.15);
         }
 
-        .btn-book:active {
-            transform: translateY(0);
+        .btn-send:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+            transform: none !important;
+        }
+
+        /* Status message */
+        .status-message {
+            text-align: center;
+            padding: 14px;
+            border-radius: 12px;
+            margin-top: 16px;
+            font-size: 14px;
+            font-weight: 500;
+            display: none;
+        }
+
+        .status-message.show {
+            display: block;
+        }
+
+        .status-message.success {
+            background: #F0E4F5;
+            color: #1F1A1D;
+            border: 2px solid #3D2B2F;
+        }
+
+        .status-message.info {
+            background: rgba(155, 160, 171, 0.15);
+            color: #1F1A1D;
         }
 
         .footer {
@@ -416,6 +475,15 @@
 
             .booking-header h2 {
                 font-size: 32px;
+            }
+
+            .button-group {
+                flex-direction: column;
+            }
+
+            .button-group .btn {
+                min-width: auto;
+                width: 100%;
             }
 
             .footer-content {
@@ -539,7 +607,14 @@
                         <textarea id="notes" placeholder="Any special requests or details..."></textarea>
                     </div>
 
-                    <button type="submit" class="btn-book">Book now</button>
+                    <!-- TWO-STEP BUTTONS -->
+                    <div class="button-group">
+                        <button type="button" id="copyBtn" class="btn btn-copy">📋 Copy booking info</button>
+                        <button type="button" id="sendBtn" class="btn btn-send" disabled>📩 Send to Ogi Barber</button>
+                    </div>
+
+                    <!-- Status message -->
+                    <div id="statusMessage" class="status-message"></div>
                 </form>
             </div>
         </div>
@@ -558,35 +633,37 @@
     </footer>
 
     <script>
-        const IG_USERNAME = "ogi.barber";
+        // ============================================================
+        // CONFIGURATION
+        // ============================================================
+        const IG_PROFILE_URL = 'https://www.instagram.com/ogi.barber/';
+        const IG_USERNAME = 'ogi.barber';
 
+        // ============================================================
+        // DOM ELEMENTS
+        // ============================================================
         const form = document.getElementById('bookingForm');
+        const copyBtn = document.getElementById('copyBtn');
+        const sendBtn = document.getElementById('sendBtn');
+        const statusMsg = document.getElementById('statusMessage');
 
-        function openInstagramDM(message) {
-            const encoded = encodeURIComponent(message);
-            
-            // THIS ACTUALLY WORKS - opens Instagram web DM to specific user with pre-filled message
-            const instagramUrl = 'https://www.instagram.com/direct/t/' + IG_USERNAME + '/?text=' + encoded;
-            
-            // Open in new tab/window
-            window.open(instagramUrl, '_blank');
-        }
+        let currentMessage = '';
+        let isCopied = false;
 
-        form.addEventListener('submit', function(e) {
-            e.preventDefault();
-
+        // ============================================================
+        // BUILD MESSAGE FROM FORM
+        // ============================================================
+        function buildMessage() {
             const name = document.getElementById('name').value.trim();
             const service = document.getElementById('service').value;
             const date = document.getElementById('date').value.trim();
             const notes = document.getElementById('notes').value.trim();
 
             if (!name || !service || !date) {
-                alert('Please fill in your name, service, and preferred date.');
-                return;
+                return null;
             }
 
-            // Build the message
-            let message = 'Booking request for @' + IG_USERNAME + '\n\n';
+            let message = '✂️ Booking request for @' + IG_USERNAME + '\n\n';
             message += 'Name: ' + name + '\n';
             message += 'Service: ' + service + '\n';
             message += 'Date: ' + date + '\n';
@@ -595,9 +672,146 @@
             }
             message += '\n— sent via booking form';
 
-            // Open Instagram DM with pre-filled message
-            openInstagramDM(message);
+            return message;
+        }
+
+        // ============================================================
+        // COPY FUNCTION
+        // ============================================================
+        function copyToClipboard(text) {
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                return navigator.clipboard.writeText(text);
+            } else {
+                // Fallback
+                return new Promise(function(resolve, reject) {
+                    const textarea = document.createElement('textarea');
+                    textarea.value = text;
+                    textarea.style.position = 'fixed';
+                    textarea.style.opacity = '0';
+                    document.body.appendChild(textarea);
+                    textarea.select();
+                    try {
+                        document.execCommand('copy');
+                        resolve();
+                    } catch (err) {
+                        reject(err);
+                    }
+                    document.body.removeChild(textarea);
+                });
+            }
+        }
+
+        // ============================================================
+        // SHOW STATUS MESSAGE
+        // ============================================================
+        function showStatus(message, type) {
+            statusMsg.textContent = message;
+            statusMsg.className = 'status-message show ' + type;
+        }
+
+        function hideStatus() {
+            statusMsg.className = 'status-message';
+        }
+
+        // ============================================================
+        // COPY BUTTON - Step 1
+        // ============================================================
+        copyBtn.addEventListener('click', function() {
+            const message = buildMessage();
+
+            if (!message) {
+                showStatus('Please fill in your name, service, and preferred date.', 'info');
+                setTimeout(hideStatus, 3000);
+                return;
+            }
+
+            currentMessage = message;
+
+            copyToClipboard(message)
+                .then(function() {
+                    isCopied = true;
+                    copyBtn.textContent = '✅ Copied!';
+                    copyBtn.classList.add('copied');
+                    sendBtn.disabled = false;
+                    showStatus('Booking info copied! Now click "Send to Ogi Barber" to open their Instagram.', 'success');
+                })
+                .catch(function() {
+                    showStatus('Failed to copy. Please try again.', 'info');
+                    setTimeout(hideStatus, 3000);
+                });
         });
+
+        // ============================================================
+        // SEND BUTTON - Step 2: Open Instagram Profile
+        // ============================================================
+        sendBtn.addEventListener('click', function() {
+            if (!isCopied) {
+                showStatus('Please copy your booking info first.', 'info');
+                setTimeout(hideStatus, 3000);
+                return;
+            }
+
+            // Show confirmation before opening
+            showStatus('Opening Instagram... Just paste (Ctrl+V / Cmd+V) and send your booking info!', 'success');
+
+            // Open Instagram profile
+            window.open(IG_PROFILE_URL, '_blank');
+
+            // Reset after a moment
+            setTimeout(function() {
+                isCopied = false;
+                copyBtn.textContent = '📋 Copy booking info';
+                copyBtn.classList.remove('copied');
+                sendBtn.disabled = true;
+                hideStatus();
+            }, 5000);
+        });
+
+        // ============================================================
+        // VALIDATE FORM ON INPUT - Enable/disable copy button
+        // ============================================================
+        form.querySelectorAll('input, select, textarea').forEach(function(el) {
+            el.addEventListener('input', function() {
+                // If form is filled, enable copy button
+                const name = document.getElementById('name').value.trim();
+                const service = document.getElementById('service').value;
+                const date = document.getElementById('date').value.trim();
+
+                if (name && service && date) {
+                    copyBtn.style.opacity = '1';
+                } else {
+                    copyBtn.style.opacity = '0.5';
+                }
+
+                // Reset copy state if form changes
+                if (isCopied) {
+                    isCopied = false;
+                    copyBtn.textContent = '📋 Copy booking info';
+                    copyBtn.classList.remove('copied');
+                    sendBtn.disabled = true;
+                    hideStatus();
+                }
+            });
+        });
+
+        // ============================================================
+        // ENTER KEY - Submit on Enter
+        // ============================================================
+        form.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' && e.target.tagName !== 'TEXTAREA') {
+                e.preventDefault();
+                if (isCopied) {
+                    sendBtn.click();
+                } else {
+                    copyBtn.click();
+                }
+            }
+        });
+
+        console.log('✅ Booking form ready for @' + IG_USERNAME);
+        console.log('📋 Step 1: Fill form → Click "Copy booking info"');
+        console.log('📩 Step 2: Click "Send to Ogi Barber" → Opens Instagram');
+        console.log('💡 Just paste (Ctrl+V) the message and send!');
     </script>
 
 </body>
